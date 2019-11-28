@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Attr</title>
+    <style>
+/*        a[target] {
+            background-color: yellow;
+        }
+        a[target=_blank] { 
+            background-color: red;
+}*/
+    </style>
+</head>
+<body>
+
+    <p>The links with a target attribute gets a yellow background:</p>
+
+    <a href="#" target="_top">w3schools.com</a>
+    <a href="http://www.google.com" target="_blank">google.com</a>
+    <a href="http://www.wikipedia.org" target="_self">wikipedia.org</a>
+
+    <script>
+
+        // Перепишите все селекторы из первой папки 001_CSS_Selectors с помощью известных Вам методов и свойств.
+        var firstSelector = document.querySelectorAll('a[target]');
+        for (var i = 0; i <= firstSelector.length - 1; i++) {
+            firstSelector[i].style.backgroundColor = 'yellow';
+        }
+
+        var secondSelector = document.querySelector('a[target="_blank"');
+        secondSelector.style.backgroundColor = 'red';
+
+        // В примере с классом добавьте к существующем классу, класс с именем newclass, а также выведите в консоль окне все стили что есть у элемента с этим классом
+        // НЕТ ПРИМЕРОВ С КЛАССОМ
+
+        // В примере с индентификатором добавьте свойства marginTop с значением 10px и background с значением red
+        // НЕТ ПРИМЕРОВ С ИДЕНТИФИКАТОРОМ
+
+    </script>
+
+</body>
+</html>

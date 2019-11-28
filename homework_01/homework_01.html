@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Работа с узлами DOM - HOMEWORK</title>
+    <!--
+            Создайте список. Реализуйте кнопки со следующим
+            функционалом позволяющие изменять DOM:
+            ● Выбрать первый элемент
+            ● Выбрать последний элемент
+            ● Выбрать следующий элемент
+            ● Выбрать предыдущий элемент
+            ● Добавить элемент
+            ● Удалить элемент
+            ● Добавить в начало
+    -->
+    <style>
+        input[type='button'] {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<script>
+    var element = '';
+
+    function clearElements() {
+        for(var i = 0; i < document.getElementById('myList').childNodes.length; i++) {
+            document.getElementById('myList').childNodes[i].style.color = 'inherit';
+        }
+    };
+
+    function append() {
+        var newItem = document.createElement("li");
+        newItem.innerHTML = 'List element';
+        document.getElementById("myList").appendChild(newItem);
+    };
+
+    function prepend() {
+        var newItem = document.createElement("li");
+        var firstElement = document.getElementById('myList').firstChild;
+        newItem.innerHTML = 'List element';
+        document.getElementById("myList").insertBefore(newItem, firstElement);
+    };
+
+    function chooseFirst() {
+        if (document.getElementById('myList').childNodes.length == 0) {
+            alert('Добавьте элемент!')
+        } else {
+            clearElements();
+            var firstElement = document.getElementById('myList').firstChild;
+            element = document.getElementById('myList').firstChild;
+            firstElement.style.color = 'red';
+        }
+    };
+
+    function chooseLast() {
+        if (document.getElementById('myList').childNodes.length == 0) {
+            alert('Добавьте элемент!')
+        } else {
+            clearElements();
+            var lastElement = document.getElementById('myList').lastChild;
+            element = document.getElementById('myList').lastChild;
+            lastElement.style.color = 'red';
+        }
+    };
+
+    function chooseNext() {
+        if (document.getElementById('myList').childNodes.length == 0) {
+            alert('Добавьте элемент!')
+        } else {
+            clearElements();
+            if (element ==  '') {
+                element = document.getElementById('myList').firstChild;
+            } else if (element == document.getElementById('myList').lastChild) {
+                element = document.getElementById('myList').firstChild;
+            } else {
+                element = element.nextSibling;
+            }
+            element.style.color = 'red';
+        }
+    };
+
+    function choosePrev() {
+        if (document.getElementById('myList').childNodes.length == 0) {
+            alert('Добавьте элемент!')
+        } else {
+            clearElements();
+            if (element == '') {
+                element = document.getElementById('myList').lastChild;
+            } else if (element == document.getElementById('myList').firstChild) {
+                element = document.getElementById('myList').lastChild;
+            } else {
+                element = element.previousSibling;
+            }
+            element.style.color = 'red';
+        }
+    };
+
+    function remove() {
+        var list = document.getElementById('myList');
+        if (element == '') {
+            alert('Выберите элемент!')
+        } else {
+            list.removeChild(element);
+            element = '';
+        }
+    }
+</script>
+
+<ul id="myList"><li>List element</li><li>List element</li><li>List element</li><li>List element</li></ul>
+<form>
+    <input type="button" value="Выбрать первый элемент" onclick="chooseFirst()" /><br />
+    <input type="button" value="Выбрать последний элемент" onclick="chooseLast()" /><br />
+    <input type="button" value="Выбрать следующий элемент" onclick="chooseNext()" /><br />
+    <input type="button" value="Выбрать предыдущий элемент" onclick="choosePrev()" /><br />
+    <input type="button" value="Добавить элемент" onclick="append()" /><br />
+    <input type="button" value="Удалить элемент" onclick="remove()" /><br />
+    <input type="button" value="Добавить в начало" onclick="prepend()" /><br />
+</form>
+</body>
+</html>

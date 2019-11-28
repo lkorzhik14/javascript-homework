@@ -1,0 +1,45 @@
+<!-- 
+    Перепишите все селекторы из первой папки 001_CSS_Selectors с помощью известных Вам методов и свойств.
+    В примере с классом добавьте к существующем классу, класс с именем newclass, а также выведите в консоль окне все стили что есть у элемента с этим классом
+    В примере с индентификатором добавьте свойства marginTop с значением 10px и background с значением red
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Id and classes</title>
+    <style>
+/*        #id1 {
+            color: red;
+        }
+        .class1 {
+            color: blue;
+            font-size: 14px;
+            text-decoration: underline;
+        }*/
+    </style>
+</head>
+<body>
+    <h1 class="class1" id="id1">Title</h1>
+
+    <script>
+
+        // Перепишите все селекторы из первой папки 001_CSS_Selectors с помощью известных Вам методов и свойств.
+        var titleByClass = document.getElementsByClassName('class1')[0];
+        var titleById = document.getElementById('id1'); // Я знаю, что это один и тот же элемент, просто для удобства применила свойства к идентификатору и классу отдельно
+        titleByClass.style.color = 'blue';
+        titleByClass.style.fontSize = '14px';
+        titleByClass.style.textDecoration = 'underline';
+        titleById.style.color = 'red';
+
+        // В примере с классом добавьте к существующем классу, класс с именем newclass, а также выведите в консоль окне все стили что есть у элемента с этим классом
+        titleByClass.className += ' newclass';
+        console.log(document.getElementsByClassName('newclass')[0].style.cssText);
+
+        // В примере с индентификатором добавьте свойства marginTop с значением 10px и background с значением red
+        titleById.style.marginTop = '10px';
+        titleById.style.background = 'red';
+
+    </script>
+</body>
+</html>
