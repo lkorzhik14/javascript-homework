@@ -1,0 +1,63 @@
+<!-- 
+    Запросите у пользователя ввести какую-то фразу.
+    Отобразите каждое отдельное слово в виде списка ul li.
+    Также отобразите первое слово UPPERCASE, а последние 2 с маленькой.
+    Найдите все буквы "а" их количество в модальное окно.
+ -->
+ 
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <title>Homework</title>
+    <style>
+        .center-div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        input, button {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="center-div">
+        <input type="text" id="phrase">
+        <button onclick="createList();">Separate words</button>
+        <ul id="wordsList"></ul>
+    </div>
+
+    <script>
+        var a = 0;
+        var wordsList = document.getElementById('wordsList');
+
+        function createList() {
+            wordsList.innerHTML = '';
+            var phrase = document.getElementById('phrase').value;
+            var text = phrase.split(/\s*,\s*|\.\s*|\s+/);
+
+            for(var i = 0; i <= phrase.length; i++) {
+                if (phrase.charAt(i) == 'a' || phrase.charAt(i) == 'A' ) a++;
+            }
+
+            alert('Amount of A - ' + a);
+
+            for (var i = 0; i < text.length; i++) {
+                var word = document.createElement("li");
+                if (i == 0) text[i] = text[i].toUpperCase();
+                if (i >= (text.length - 2)) {
+                    text[i] = text[i].substring(0, 1).toLowerCase() + text[i].substring(1, text[i].length);
+                }
+                if (text[i] != '') {
+                    word.innerHTML = text[i];
+                    wordsList.appendChild(word);
+                }
+            }
+
+            a = 0;
+        }
+    </script>
+</body>
+</html>

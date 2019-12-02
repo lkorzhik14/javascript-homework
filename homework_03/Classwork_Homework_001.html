@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Homework</title>
+</head>
+<body>
+<!--     Создайте счетчик секунд, который начинает отчет с 1 и заканчивается на 30,
+        также добавьте кнопки который останавливают отчет, и запускают его заново и добавьте кнопку обнуляющую отcчет.
+        Также попробуйте изменить код так чтобы отчет начинался с 30 и заканчивался на 1. -->
+    <div>
+        <span id="timer">0</span>
+        second(s)
+    </div>
+    <button onclick="startTimer();">Старт</button>
+    <button onclick="stopTimer();">Стоп</button>
+    <button onclick="clearTimer();">Обнулить</button>
+    <br><br>
+
+    <div>
+        <span id="timer2">30</span>
+        second(s)
+    </div>
+    <button onclick="startTimer2();">Старт</button>
+    <button onclick="stopTimer2();">Стоп</button>
+    <button onclick="clearTimer2();">Обнулить</button>
+
+    <script>
+        var second = 0;
+        var timer = null;
+        function startTimer() {
+            timer = setInterval(function () {
+                if(second < 30) {
+                    second++;
+                    console.log(second);
+                    document.getElementById('timer').innerText = second;
+                } else {
+                    stopTimer();
+                }
+            }, 1000);
+        }
+        function stopTimer() {
+            clearInterval(timer);
+        }
+        function clearTimer() {
+            clearInterval(timer);
+            second = 0;
+            document.getElementById('timer').innerText = second;
+        }
+
+        // var second2 = 30;
+        // var timer2 = null;
+        // function startTimer2() {
+        //     timer2 = setInterval(function () {
+        //         if(second2 > 0) {
+        //             second2--;
+        //             document.getElementById('timer2').innerText = second2;
+        //         } else {
+        //             stopTimer2();
+        //         }
+        //     }, 1000);
+        // }
+        // function stopTimer2() {
+        //     clearInterval(timer2);
+        // }
+        // function clearTimer2() {
+        //     clearInterval(timer2);
+        //     second2 = 30;
+        //     document.getElementById('timer2').innerText = second2;
+        // }
+    </script>
+</body>
+</html>
