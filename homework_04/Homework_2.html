@@ -1,0 +1,53 @@
+<!-- Доработайте пример, 005_thisExample.html, при наведении мыши к одному из блоков, цвет блока должен измениться, на уникальный,
+такой которого еще нету у существующих блоков. Также выведите в блок текстовое оповещение о информации цвета, который используется для фона данного блока.
+При попытке закрыть вкладку, придупредите пользователя о том что информация будет утеряна. Используйте window.onload.  -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Homework</title>
+    <style>
+        div {
+            background-color:green;
+            height: 100px;
+            width: 100px;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <script>
+        var divArr = document.getElementsByTagName("div");
+        var randomColor;
+        for (var i = 0; i < divArr.length; i++) {
+            divArr[i].onmouseenter = function () {
+                randomColor = getRandomColor()
+                this.style.backgroundColor = randomColor;
+                this.innerHTML = randomColor;
+            }
+        }
+
+        window.onbeforeunload = function() {
+            return "Вы пытаетесь закрыть вкладку. Вся информация будет утеряна!";
+        }
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF'.split('');
+            var color = '#';
+            for (var i = 0; i < 6; i++ ) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+</body>
+</html>
