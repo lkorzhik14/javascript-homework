@@ -1,0 +1,76 @@
+<!-- Реализуйте последний 2 слайда в презентации с помощью пройденого на уроке материала -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homework</title>
+    <script type="text/javascript">
+        function Man() {
+            this.walk = function() { console.log('I can walk!'); }
+            this.eat = function() { console.log('I can eat!'); }
+            this.drink = function() { console.log('I can drink!'); }
+        }
+
+        function Soldier() {
+            this.shoot = function() { console.log('I can shoot!'); }
+        }
+
+        function Doctor() {
+            this.cure = function() { console.log('I can cure!'); }
+        }
+
+        function Dentist() {
+            this.cure = function() { console.log('I can treat teeth!'); }
+        }
+
+        function Surgeon() {
+            this.cure = function() { console.log('I can perform operation!'); }
+        }
+
+        Soldier.prototype = new Man();
+        Doctor.prototype = new Man();
+        Dentist.prototype = new Doctor();
+        Surgeon.prototype = new Doctor();
+
+        window.onload = function() {
+            document.getElementById('checkSoldier').onclick = function() {
+                var manOne = new Soldier();
+                manOne.walk();
+                manOne.eat();
+                manOne.drink();
+                manOne.shoot();
+            }
+            document.getElementById('checkDoctor').onclick = function() {
+                var manTwo = new Doctor();
+                manTwo.walk();
+                manTwo.eat();
+                manTwo.drink();
+                manTwo.cure();
+            }
+            document.getElementById('checkDentist').onclick = function() {
+                var manThree = new Dentist();
+                manThree.walk();
+                manThree.eat();
+                manThree.drink();
+                manThree.cure();
+            }
+            document.getElementById('checkSurgeon').onclick = function() {
+                var manFour = new Surgeon();
+                manFour.walk();
+                manFour.eat();
+                manFour.drink();
+                manFour.cure();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div>Check console:</div>
+    <br>
+    <button id="checkSoldier">What can Soldier do?</button>
+    <button id="checkDoctor">What can Doctor do?</button>
+    <br><br>
+    <button id="checkDentist">What can Dentist do?</button>
+    <button id="checkSurgeon">What can Surgeon do?</button>
+</body>
+</html>
