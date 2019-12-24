@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SW Project</title>
+    <link>
+    <style>
+        @font-face {
+            font-family: "DistantGalaxy";
+            src: url(fonts/DistantGalaxy.ttf) format("truetype");
+        }
+        body {
+            font-family: 'DistantGalaxy';
+            background-color: #000000;
+        }
+        .mainList {
+            width: 744px;
+            margin: 0 auto;
+        }
+        #characterList {
+            min-height: 660px;
+            color: #ffec08;
+            font-size: 26px;
+            margin: 1em 0;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        #characterList li {
+            padding: 20px 0 20px 240px;
+            position: relative;
+        }
+        #characterList li:hover {
+            color: #000000;
+            cursor: pointer;
+            background: url(LightSaber.png) no-repeat;
+            background-position: center left;
+            background-size: contain;
+        }
+        /*#characterList li:before {*/
+            /*content: '';*/
+            /*width: 190px;*/
+            /*position: absolute;*/
+            /*height: 100%;*/
+            /*left: 0;*/
+            /*top: 0;*/
+            /*background: url(LightSaber.png) no-repeat;*/
+            /*background-position: center left;*/
+            /*background-size: cover;*/
+            /*z-index: -1;*/
+            /*transition: all 0.5s;*/
+        /*}*/
+        /*#characterList li:hover:before {*/
+            /*width: 100%;*/
+        /*}*/
+        /*#characterList li:after {*/
+            /*content: '';*/
+            /*width: 190px;*/
+            /*position: absolute;*/
+            /*height: 100%;*/
+            /*left: 0;*/
+            /*top: 0;*/
+            /*background: url(LightSaber.png) no-repeat;*/
+            /*background-position: center left;*/
+            /*background-size: cover;*/
+            /*z-index: -1;*/
+        /*}*/
+        /*#characterList li:before {*/
+            /*content: '';*/
+            /*position: absolute;*/
+            /*height: 100%;*/
+            /*left: 0;*/
+            /*top: 0;*/
+            /*background: url(LightSaber.png) no-repeat;*/
+            /*background-position: center left;*/
+            /*background-size: cover;*/
+            /*z-index: -1;*/
+            /*transition: all 0.5s;*/
+            /*width: 0;*/
+        /*}*/
+        /*#characterList li:hover:before {*/
+            /*width: 100%;*/
+        /*}*/
+        .btnWrapper {
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            font-family: 'DistantGalaxy';
+            font-size: 30px;
+            color: #ffec08;
+            border: 1px solid #ffec08;
+            border-radius: 10px;
+            background-color: transparent;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: all 0.1s;
+            outline: none;
+        }
+        button[disabled="disabled"] {
+            color: #786f04;
+            border-color: #786f04;
+            pointer-events: none;
+        }
+        button:hover {
+            background-color: #ffec08;
+            color: #000;
+        }
+        /*#nextBtn:hover {*/
+            /*background-color: #a21b28;*/
+            /*color: #fff;*/
+            /*border-color: #a21b28;*/
+            /*box-shadow: 0 0 20px #a31f2b;*/
+        /*}*/
+        /*#prevBtn:hover {*/
+            /*background-color: #007ecc;*/
+            /*color: #ffffff;*/
+            /*border-color: #007ecc;*/
+            /*box-shadow: 0 0 20px #007ecc;*/
+        /*}*/
+    </style>
+</head>
+<body>
+    <div class="mainList">
+        <ul id="characterList"></ul>
+        <div class="btnWrapper">
+            <button id="prevBtn" onclick="previous();">Previous</button>
+            <button id="nextBtn" onclick="next();">Next</button>
+        </div>
+    </div>
+
+    <script>
+        var url = 'https://swapi.co/api/people/';
+        var characterList = document.getElementById('characterList');
+        var nextBtn = document.getElementById('nextBtn');
+        var prevBtn = document.getElementById('prevBtn');
+        var listPage = 1;
+
+        loadCharacterList(listPage);
+
+        function loadCharacterList(page) {
+            characterList.innerHTML = '';
+            fetch(url + '?page=' + page)
+                .then(function (resp) {
+                    return resp.json()
+                })
+                .then(function (data) {
+                    // console.log(data.results);
+                    for (var item of data.results) {
+                        characterList.insertAdjacentHTML("beforeEnd", `<li>${item.name}</li>`);
+                    }
+                });
+
+            if (page === 1) {
+                prevBtn.setAttribute('disabled', 'disabled');
+            } else {
+                prevBtn.removeAttribute('disabled');
+            }
+
+            if (page === 9) {
+                nextBtn.setAttribute('disabled', 'disabled');
+            } else {
+                nextBtn.removeAttribute('disabled');
+            }
+        }
+
+        function next() {
+            loadCharacterList(listPage + 1);
+            listPage++;
+        }
+
+        function previous() {
+            loadCharacterList(listPage - 1);
+            listPage--;
+        }
+    </script>
+</body>
+</html>
