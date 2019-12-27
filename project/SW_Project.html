@@ -12,18 +12,26 @@
         body {
             font-family: 'DistantGalaxy';
             background-color: #000000;
+            margin: 0;
         }
-        .mainList {
+        .main {
             width: 744px;
             margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         #characterList {
             min-height: 660px;
             color: #ffec08;
             font-size: 26px;
-            margin: 1em 0;
+            padding: 1em 0;
+            margin: 0;
             list-style-type: none;
             padding-left: 0;
+            width: 100%;
         }
         #characterList li {
             padding: 20px 0 20px 240px;
@@ -36,53 +44,10 @@
             background-position: center left;
             background-size: contain;
         }
-        /*#characterList li:before {*/
-            /*content: '';*/
-            /*width: 190px;*/
-            /*position: absolute;*/
-            /*height: 100%;*/
-            /*left: 0;*/
-            /*top: 0;*/
-            /*background: url(LightSaber.png) no-repeat;*/
-            /*background-position: center left;*/
-            /*background-size: cover;*/
-            /*z-index: -1;*/
-            /*transition: all 0.5s;*/
-        /*}*/
-        /*#characterList li:hover:before {*/
-            /*width: 100%;*/
-        /*}*/
-        /*#characterList li:after {*/
-            /*content: '';*/
-            /*width: 190px;*/
-            /*position: absolute;*/
-            /*height: 100%;*/
-            /*left: 0;*/
-            /*top: 0;*/
-            /*background: url(LightSaber.png) no-repeat;*/
-            /*background-position: center left;*/
-            /*background-size: cover;*/
-            /*z-index: -1;*/
-        /*}*/
-        /*#characterList li:before {*/
-            /*content: '';*/
-            /*position: absolute;*/
-            /*height: 100%;*/
-            /*left: 0;*/
-            /*top: 0;*/
-            /*background: url(LightSaber.png) no-repeat;*/
-            /*background-position: center left;*/
-            /*background-size: cover;*/
-            /*z-index: -1;*/
-            /*transition: all 0.5s;*/
-            /*width: 0;*/
-        /*}*/
-        /*#characterList li:hover:before {*/
-            /*width: 100%;*/
-        /*}*/
         .btnWrapper {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            margin-top: 20px;
         }
         button {
             font-family: 'DistantGalaxy';
@@ -92,6 +57,7 @@
             border-radius: 10px;
             background-color: transparent;
             padding: 5px 10px;
+            margin: 0 20px;
             cursor: pointer;
             transition: all 0.1s;
             outline: none;
@@ -105,22 +71,37 @@
             background-color: #ffec08;
             color: #000;
         }
-        /*#nextBtn:hover {*/
-            /*background-color: #a21b28;*/
-            /*color: #fff;*/
-            /*border-color: #a21b28;*/
-            /*box-shadow: 0 0 20px #a31f2b;*/
-        /*}*/
-        /*#prevBtn:hover {*/
-            /*background-color: #007ecc;*/
-            /*color: #ffffff;*/
-            /*border-color: #007ecc;*/
-            /*box-shadow: 0 0 20px #007ecc;*/
-        /*}*/
+        #infoTable {
+            width: 100%;
+            color: #ffec08;
+            font-size: 18px;
+            border: 1px solid #ff0000;
+            border-radius: 10px;
+            border-collapse: collapse;
+            padding: 30px 0;
+            display: none;
+        }
+        #infoTable td, #infoTable th {
+            padding: 10px;
+            border: 1px solid #ff0000;
+        }
+        #infoTable th {
+            font-size: 26px;
+        }
+        .films, .species {
+            padding: 0;
+            list-style-type: none;
+        }
+        .films li, .species li {
+            padding: 5px 0;
+        }
+        #backBtn {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="mainList">
+    <div class="main">
         <ul id="characterList"></ul>
         <div class="btnWrapper">
             <button id="prevBtn" onclick="previous();">Previous</button>
@@ -130,23 +111,30 @@
 
     <script>
         var url = 'https://swapi.co/api/people/';
-        var characterList = document.getElementById('characterList');
-        var nextBtn = document.getElementById('nextBtn');
-        var prevBtn = document.getElementById('prevBtn');
+        var mainDiv = document.querySelector('.main');
+        var info;
         var listPage = 1;
 
         loadCharacterList(listPage);
 
         function loadCharacterList(page) {
+
+            let characterList = document.getElementById('characterList');
+            let nextBtn = document.getElementById('nextBtn');
+            let prevBtn = document.getElementById('prevBtn');
+
             characterList.innerHTML = '';
+
             fetch(url + '?page=' + page)
-                .then(function (resp) {
-                    return resp.json()
-                })
+                .then(json)
                 .then(function (data) {
-                    // console.log(data.results);
                     for (var item of data.results) {
-                        characterList.insertAdjacentHTML("beforeEnd", `<li>${item.name}</li>`);
+                        let character = document.createElement('li');
+                        character.addEventListener('click', function () {
+                            showInfo(item.url);
+                        });
+                        character.innerHTML = item.name;
+                        characterList.insertAdjacentElement("beforeEnd", character);
                     }
                 });
 
@@ -164,13 +152,115 @@
         }
 
         function next() {
-            loadCharacterList(listPage + 1);
             listPage++;
+            loadCharacterList(listPage);
         }
 
         function previous() {
-            loadCharacterList(listPage - 1);
             listPage--;
+            loadCharacterList(listPage);
+        }
+        
+        function showInfo(url) {
+            fetch(url)
+                .then(json)
+                    .then(function (data) {
+                        window.localStorage.lastPage = encodeURIComponent(listPage);
+                        let films = '', species = '';
+                        let i = 0, j = 0;
+
+                        for (var film in data.films) {
+                            i++;
+                            films += `<li data-id="${i}"></li>`
+                            getFilms(data.films[film], i);
+                        }
+
+                        for (var key in data.species) {
+                            j++;
+                            species += `<li data-id="${j}"></li>`
+                            getSpecies(data.species[key], j);
+                        }
+
+                        info = '<table id="infoTable">';
+                        info += `<tr>
+                                    <th colspan="2">${data.name}</th>
+                                </tr>
+                                <tr>
+                                    <td>Birth year</td>
+                                    <td>${data.birth_year}</td>
+                                </tr>
+                                <tr>
+                                    <td>Gender</td>
+                                    <td>${data.gender}</td>
+                                </tr>
+                                <tr>
+                                    <td>Films</td>
+                                    <td><ul class="films">${films}</ul></td>
+                                </tr>
+                                <tr>
+                                    <td>Homeworld</td>
+                                    <td id="homeworld"></td>
+                                </tr>
+                                <tr>
+                                    <td>Species</td>
+                                    <td><ul class="species">${species}</ul></td>
+                                </tr>
+                            </table>
+                            <div class="btnWrapper">
+                                <button id="backBtn" onclick="returnBack();">Back</button>
+                            </div>`;
+
+                        getHomeworld(data.homeworld);
+
+                        mainDiv.innerHTML = info;
+
+                        setTimeout(showTable, 1000)
+                    });
+
+        }
+
+        function showTable() {
+            console.log(123);
+            document.getElementById('infoTable').style.display = 'table';
+            document.getElementById('backBtn').style.display = 'block';
+        }
+
+        function getFilms(url, id) {
+            fetch(url)
+                .then(json)
+                    .then(function (data) {
+                        document.querySelector('.films li[data-id="' + id + '"]').innerText = data.title;
+                    })
+        }
+
+        function getSpecies(url, id) {
+            fetch(url)
+                .then(json)
+                    .then(function (data) {
+                        document.querySelector('.species li[data-id="' + id + '"]').innerText = data.name;
+                    })
+        }
+        
+        function getHomeworld(url) {
+            fetch(url)
+                .then(json)
+                    .then(function (data) {
+                        document.getElementById('homeworld').innerText = data.name;
+                    })
+        }
+
+        function returnBack() {
+            mainDiv.innerHTML = `<ul id="characterList"></ul>
+                                <div class="btnWrapper">
+                                    <button id="prevBtn" onclick="previous();">Previous</button>
+                                    <button id="nextBtn" onclick="next();">Next</button>
+                                </div>`;
+            let lastPage = Number(decodeURIComponent(window.localStorage.lastPage));
+            loadCharacterList(lastPage);
+        }
+        
+        function json(response) {
+            return response.json()
         }
     </script>
 </body>
